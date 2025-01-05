@@ -69,3 +69,50 @@ There are no missing values in any of the columns.
 
 The goal is to understand why 33% of all hotel bookings are canceled, which represents a significant impact on the business. Additionally, the task is to predict the likelihood of a booking being canceled over time, allowing the hotel to better estimate its capacity. This will enable the hotel to optimize booking availability by freeing up space for other customers when there is a high probability of cancellations.
 
+## Markdown Documentation
+- **Room Type**: We can see that for room types, the majority are of type 1 and 4. Room types 1, 2, and 4 seem to be booked by two people, while types 3 and 5 are booked by fewer people (possibly more individual guests), and types 6 and 7 are booked by 3 or more people. We observe that rooms with fewer guests on average have lower cancellation ratios.
+
+## Markdown Documentation
+- **Total People**: The majority of bookings are for two people, followed by bookings for one and three people. Interestingly, single-person bookings tend to have fewer cancellations compared to bookings with more people. This could potentially be linked to work-related trips or other factors.
+
+## Markdown Documentation
+- **Lead Time**: The distribution of this property, which indicates how far in advance bookings are made, is particularly interesting. We observe that as the booking date approaches, the number of bookings increases, with the median lead time being 60 days. However, unexpectedly, the cancellation ratio also rises with longer lead times, suggesting that bookings made further in advance are more likely to be canceled.
+
+## Markdown Documentation
+- **Price per Room**: On average, users pay 99 euros per room per day, with the first quartile at 80 euros and the third quartile at 120 euros. There are also some extreme high values in the price distribution. We see a positive correlation between higher prices and higher cancellation ratio, but is not super strong.
+
+## Markdown Documentation
+- **Price per Room and Person**: On average, users pay 51 euros per room per day and per person in the booking, with the first quartile at 42 euros and the third quartile at 66 euros. There are also some extreme high values in the price distribution. We see a positive correlation but less strong than the total price per day
+
+## Markdown Documentation
+- **Number of special Requests**: More special requests correlates with lower cancellation ratio.
+
+## Markdown Documentation
+- **Price per Room**: Most bookings are made online, and these tend to have the highest cancellation ratio. In contrast, bookings made by corporate clients have a lower cancellation ratio, which makes sense since these are typically business trips, and corporate travelers may be less price-sensitive.
+
+## Markdown Documentation
+- **Repeated Guest**: Repeat guests make up only 2.3% of all bookings, but their cancellation ratio is significantly lower compared to first-time guests.
+
+## Markdown Documentation
+- **Has previous cancellations**: Users who cancelled before have less cancellation ratio but also are just a 0.8%.
+
+## Markdown Documentation
+- **Required Car Parking Space**: Only 3% of users request parking, but this significantly lowers the cancellation ratio.
+
+## Markdown Documentation
+- **Type of Meal Plan**: 76% of users request Meal Type 1, while 8.7% choose Meal Type 2. The remaining 14% do not request a meal. The cancellation ratio is notably higher among users who select Meal Type 2.
+
+## Markdown Documentation
+- **Total Nights**: On average, users stay for three nights, with the first quartile at two nights and the third quartile at four nights. Users staying for just one night have a significantly lower cancellation ratio. However, the cancellation ratio increases notably for stays longer than five nights.
+
+## Markdown Documentation
+- **Type of Stay in Terms of Weekday-Weekend**: Around half of the bookings include both weekdays and weekends, while a similar proportion are for weekdays only. Bookings for weekends alone are relatively rare. The cancellation ratio is higher for stays that include both weekdays and weekends compared to the other two categories.
+
+## Markdown Documentation
+- **Type of Stay in Terms of Weekday-Weekend**: Stays with children account for just 6%, with a slightly higher chance of cancellation.
+
+## Markdown Documentation
+- **Arrival Day of the Week**: Bookings with arrival dates on Sundays exhibit a significantly higher likelihood of cancellation compared to other days. This observation highlights an association between the day of the week and cancellation tendencies.
+
+- **Arrival Month of the Year**: A noticeable increase in cancellation rates is observed during the summer months, suggesting a seasonal trend in booking behavior.
+
