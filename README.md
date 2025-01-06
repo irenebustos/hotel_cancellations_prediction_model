@@ -116,3 +116,86 @@ The goal is to understand why 33% of all hotel bookings are canceled, which repr
 
 - **Arrival Month of the Year**: A noticeable increase in cancellation rates is observed during the summer months, suggesting a seasonal trend in booking behavior.
 
+## Markdown Documentation
+For the model the features used for testing the model would be: 
+- 'no_of_weekend_nights'
+- 'no_of_week_nights'
+- 'type_of_meal_plan'
+- 'required_car_parking_space'
+- 'room_type_reserved'
+- 'lead_time'
+- 'arrival_month'
+- 'market_segment_type'
+- 'repeated_guest'
+- 'avg_price_per_room'
+- 'no_of_special_requests'
+- 'total_people'
+- 'total_nights'
+- 'have_children', 
+- 'wday'
+
+This columns are dropped: 'booking_id','no_of_previous_cancellations','arrival_year','arrival_date','no_of_previous_cancellations', 'no_of_previous_bookings_not_canceled','has_prev_cancellations', 'has_prev_bookings_not_cancelled','segment_days_week','arrival_date_complete', 'month_year', 'no_of_children', 'no_of_adults','price_per_adult', 'price_per_person'
+
+Target output: 'booking_status' as booking_cancelled_flag, 1 when is cancelled and 0 if not
+
+## Markdown Documentation
+### SMOTE (Synthetic Minority Oversampling Technique): all over sample
+
+Creates synthetic samples by interpolating between existing minority class samples.
+Efficiency: Effective at generating diverse synthetic samples.
+Works well with numerical data.
+Downside: Can introduce noise or outliers if the data has overlapping classes.
+
+## Markdown Documentation
+It looks like myvmodel’s ROC AUC score decreased after apliying all resample techniques, but other metrics such as Recall and F1 Score improved. this situaltion can occur beacuse we are creating a larger number of synthetic positive instances, which might not be as informative or might create noise, thereby making the decision boundary less clear and harming your model's overall discriminative ability.
+
+Anyway, as backup I will select Random over sample as winner resample technique due to be the technique improving all metrics the most in general, but the models will be tested with resample data and not
+
+## Markdown Documentation
+##### Handling Imbalanced Data and Prioritizing Key Metrics
+
+In this project, I applied various **balancing techniques** such as **SMOTE (Synthetic Minority Over-sampling Technique)**, **Random Over/Under Sampling**, and **NearMiss** to address the issue of **class imbalance** in the dataset. Class imbalance occurs when one class has significantly fewer samples than the other, which can lead to biased models that favor the majority class. By using these balancing methods, I ensured that the model received enough data from the minority class, helping it learn better and make more accurate predictions.
+
+After experimenting with different SMOTE ratios, I selected **SMOTE with a ratio of 1.0** for the final model, as it consistently provided the best performance across multiple metrics. Based on the evaluation scores, SMOTE with a 1.0 ratio achieved the highest **AUC**, **Recall**, and **F1 Score**, making it the most balanced approach for this dataset.
+
+To evaluate the model's performance, I prioritized the following metrics:
+- **AUC (Area Under the Curve)**: AUC is a reliable metric for classification models, especially when working with imbalanced datasets. It measures how well the model distinguishes between the classes across different decision thresholds, regardless of the class distribution. A higher AUC indicates better overall model performance in distinguishing between the positive and negative classes.
+  
+- **Recall**: Recall (True Positive Rate) was prioritized to ensure that the model does not miss important positive instances, particularly in cases where **false negatives** could have serious consequences, such as in fraud detection or medical diagnoses.
+
+- **F1 Score**: F1 Score, the harmonic mean of precision and recall, was used to balance both **precision** and **recall**. This is crucial in imbalanced datasets where we want to avoid a model that either favors precision at the expense of recall or vice versa. The F1 Score provides a more comprehensive view of the model's ability to identify both positive and negative instances correctly.
+
+By applying these techniques and focusing on these metrics, I ensured that the model performs well in terms of both **accuracy** and **sensitivity** to the minority class, providing meaningful and reliable predictions.
+
+## Markdown Documentation
+After evaluating multiple models, including Logistic Regression, Random Forest, and XGBoost (with and without hyperparameter tuning), the XGBoost model with tuned parameters emerged as the best performer. It was optimized based on key metrics such as AUC, F1 score, and recall, which were prioritized for this task.
+
+The tuned XGBoost model achieved an impressive AUC score of 95%, indicating strong overall classification performance. Additionally, it achieved an F1 score of 83.4%, reflecting a good balance between precision and recall. The recall value of 80.6% demonstrates the model's ability to correctly identify positive instances, which was crucial for this problem.
+
+By leveraging grid search for hyperparameter tuning, the model parameters were optimized for maximum performance, showcasing the power of XGBoost for this classification task. Given the emphasis on these three metrics, this XGBoost model outperformed other algorithms, making it the best choice for this project.
+
+## Markdown Documentation
+#### Key Features Influencing Booking Cancellations
+
+The features that best explain booking cancellations at the hotel are:
+
+- **Lead Time**: The time in advance the booking was made.
+- **Price per Day and Room**: The cost for a single room per day.
+- **Price per Person and Day**: The cost for one individual per day.
+- **Month of Arrival**: The month when the guest arrives.
+- **Number of Weekdays**: The count of weekdays during the booking.
+- **Total Nights**: The total number of nights in the booking.
+
+## Markdown Documentation
+## Model Performance Summary
+
+
+The XGBoost model demonstrated strong performance across both the validation and test datasets, achieving high scores in key metrics:
+
+| Dataset       | Accuracy  | Precision | Recall   | F1 Score | ROC AUC  |
+|---------------|-----------|-----------|----------|----------|----------|
+| **Validation**| 89.55%    | 86.61%    | 80.56%   | 83.48%   | 95.06%   |
+| **Test**      | 89.70%    | 86.61%    | 81.11%   | 83.77%   | 95.78%   |
+
+These results indicate the model's robustness and ability to generalize effectively, making it the best-performing model for this problem based on the metrics prioritized: **ROC AUC**, **F1 score**, and **recall**.
+
