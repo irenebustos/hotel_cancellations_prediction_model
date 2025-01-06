@@ -13,8 +13,15 @@
 
 ## Introduction
 #### Problem Description
+The hospitality industry faces a significant challenge with booking cancellations, as approximately 33% of hotel bookings are canceled. This high cancellation rate poses financial risks and logistical challenges for hotels, impacting revenue forecasting and room availability management. 
 
-The goal is to understand why 33% of all hotel bookings are canceled, which represents a significant impact on the business. Additionally, the task is to predict the likelihood of a booking being canceled over time, allowing the hotel to better estimate its capacity. This will enable the hotel to optimize booking availability by freeing up space for other customers when there is a high probability of cancellations.
+Understanding the factors behind these cancellations and being able to predict them is crucial for hotels. A timely prediction model will allow hotels to make better decisions, such as optimizing room inventory and adjusting marketing strategies, leading to increased profitability and customer satisfaction. This model can help hotels mitigate the losses from cancellations by:
+
+- **Proactively managing capacity**: Freeing up rooms when there is a high likelihood of cancellation will allow hotels to accept more bookings, maximizing revenue.
+- **Personalizing customer engagement**: Hotels could target customers with higher cancellation probabilities with tailored offers or reminders to encourage commitment.
+- **Operational efficiency**: A prediction model helps staff to allocate resources based on predicted cancellations (e.g., preparing fewer rooms for cleaning or adjusting staffing schedules).
+
+By predicting cancellations, this model aims to help hotels optimize their operations, reduce revenue loss, and enhance customer experience.
 
 ## Dataset
 The database used for the model consists in a set of bookings from a hotel with a unique id called ¨boooking_id¨ from 2017 and 2018.
@@ -109,26 +116,33 @@ There are no missing values in any of the columns.
 - **Arrival Month of the Year**: A noticeable increase in cancellation rates is observed during the summer months, suggesting a seasonal trend in booking behavior.
 
 ## Model training (including feature selection)
-For the model the features used for testing the model would be: 
-- 'no_of_weekend_nights'
-- 'no_of_week_nights'
-- 'type_of_meal_plan'
-- 'required_car_parking_space'
-- 'room_type_reserved'
-- 'lead_time'
-- 'arrival_month'
-- 'market_segment_type'
-- 'repeated_guest'
-- 'avg_price_per_room'
-- 'no_of_special_requests'
-- 'total_people'
-- 'total_nights'
-- 'have_children', 
-- 'wday'
+The selection of features was based on their relevance to booking cancellations and insights from exploratory data analysis (EDA). We kept variables that had a substantial relationship with the target variable (`booking_status`) while dropping those that were either redundant or irrelevant.
 
-This columns are dropped: 'booking_id','no_of_previous_cancellations','arrival_year','arrival_date','no_of_previous_cancellations', 'no_of_previous_bookings_not_canceled','has_prev_cancellations', 'has_prev_bookings_not_cancelled','segment_days_week','arrival_date_complete', 'month_year', 'no_of_children', 'no_of_adults','price_per_adult', 'price_per_person'
+   **Features Included**:
+   - `'no_of_weekend_nights'`: The number of weekend nights in the booking, potentially reflecting customer preferences for weekend stays.
+   - `'no_of_week_nights'`: The number of weeknights in the booking, helping to capture booking duration patterns.
+   - `'type_of_meal_plan'`: The meal plan chosen, which may correlate with customer commitment and their likelihood to cancel.
+   - `'required_car_parking_space'`: Whether parking was requested, which might indicate the level of customer commitment.
+   - `'room_type_reserved'`: Room type selection, reflecting preferences that might influence cancellation behavior.
+   - `'lead_time'`: The time between booking and arrival, as earlier bookings may indicate stronger commitment.
+   - `'arrival_month'`: Seasonal trends that affect booking patterns and cancellation rates.
+   - `'market_segment_type'`: The segment from which the booking originated (e.g., corporate, online travel agents).
+   - `'repeated_guest'`: Whether the guest is a repeat customer, as repeat guests tend to have lower cancellation rates.
+   - `'avg_price_per_room'`: Average price per room booked, with higher-priced bookings being less likely to be canceled.
+   - `'no_of_special_requests'`: A higher number of special requests correlates with reduced cancellations.
+   - `'total_people'`: The total number of people in the booking, which can affect the likelihood of cancellation.
+   - `'total_nights'`: The total number of nights booked, indicating the length of the stay.
+   - `'have_children'`: Whether children are part of the booking, which can influence the cancellation behavior.
+   - `'wday'`: The day of the week the booking is made, as cancellations may vary depending on booking day patterns.
 
-Target output: 'booking_status' as booking_cancelled_flag, 1 when is cancelled and 0 if not
+   **Features Dropped**:
+   - `'booking_id'`: A unique identifier for the booking, which is not useful for prediction.
+   - `'no_of_previous_cancellations'` and `'no_of_previous_bookings_not_canceled'`: These were removed to simplify the model as we instead created binary flags (`has_previous_cancellations` and `has_previous_bookings_not_canceled`) based on their presence.
+   - `'arrival_year'`, `'arrival_date'`: These variables did not provide meaningful information for prediction and were removed for clarity.
+   - `'price_per_adult'` and `'price_per_person'`: These columns were derived and replaced by `'avg_price_per_room'` for simplicity.
+
+
+Target output: `booking_status` as `booking_cancelled_flag`, 1 when is cancelled and 0 if not
 
 ### Handling Imbalanced Data and Prioritizing Key Metrics
 In this project, I applied various **balancing techniques** such as **SMOTE (Synthetic Minority Over-sampling Technique)**, **Random Over/Under Sampling**, and **NearMiss** to address the issue of **class imbalance** in the dataset. Class imbalance occurs when one class has significantly fewer samples than the other, which can lead to biased models that favor the majority class. By using these balancing methods, I ensured that the model received enough data from the minority class, helping it learn better and make more accurate predictions.
