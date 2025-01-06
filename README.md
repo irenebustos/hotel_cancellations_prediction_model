@@ -6,6 +6,7 @@
 1. [Introduction](##introduction)
 2. [Dataset](#dataset)
 3. [EDA Insights](#eda-insights)
+4. [Model training (including feature selection)](##model-training-(-including-feature-selection))
 3. [Prerequisites](#prerequisites)
 4. [Steps to Install](#steps-to-install)
 5. [Steps to Create the Docker Container and Run the Service](#steps-to-create-the-docker-container-and-run-the-service)
