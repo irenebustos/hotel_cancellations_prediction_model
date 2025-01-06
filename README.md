@@ -1,5 +1,5 @@
 # Hotel Booking Cancellation Prediction ML Model
-![Alt text](images/image_readme_banner.png)
+![Alt text](images/image_readme_banner.webp)
 
 
 ## Table of Contents
