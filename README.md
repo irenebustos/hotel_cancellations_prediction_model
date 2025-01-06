@@ -10,8 +10,9 @@
 5. [Prerequisites](#prerequisites)
 6. [Steps to Install](#steps-to-install)
 7. [Steps to Create the Docker Container and Run the Service](#steps-to-create-the-docker-container-and-run-the-service)
-6. [Using the model by using an API using a Lambda function in AWS](###-Using-model-in-AWS)
+8. [Using the model by using an API using a Lambda function in AWS](###-Using-model-in-AWS)
 
+----
 ## Introduction
 #### Problem Description
 The hospitality industry faces a significant challenge with booking cancellations, as approximately 33% of hotel bookings are canceled. This high cancellation rate poses financial risks and logistical challenges for hotels, impacting revenue forecasting and room availability management. 
@@ -24,6 +25,7 @@ Understanding the factors behind these cancellations and being able to predict t
 
 By predicting cancellations, this model aims to help hotels optimize their operations, reduce revenue loss, and enhance customer experience.
 
+----
 ## Dataset
 The database used for the model consists in a set of bookings from a hotel with a unique id called ¨boooking_id¨ from 2017 and 2018.
 
@@ -83,6 +85,7 @@ There are no missing values in any of the columns.
 
 - **have_children**: A flag indicating whether the booking includes children. This flag replaces the exact number of children, simplifying the analysis.
 
+----
 ## EDA Insights
 - **Room Type**: We can see that for room types, the majority are of type 1 and 4. Room types 1, 2, and 4 seem to be booked by two people, while types 3 and 5 are booked by fewer people (possibly more individual guests), and types 6 and 7 are booked by 3 or more people. We observe that rooms with fewer guests on average have lower cancellation ratios.
 
@@ -116,6 +119,7 @@ There are no missing values in any of the columns.
 
 - **Arrival Month of the Year**: A noticeable increase in cancellation rates is observed during the summer months, suggesting a seasonal trend in booking behavior.
 
+----
 ## Model training (including feature selection)
 The selection of features was based on their relevance to booking cancellations and insights from exploratory data analysis (EDA). We kept variables that had a substantial relationship with the target variable (`booking_status`) while dropping those that were either redundant or irrelevant.
 
@@ -187,4 +191,71 @@ The XGBoost model demonstrated strong performance across both the validation and
 | **Test**      | 89.70%    | 86.61%    | 81.11%   | 83.77%   | 95.78%   |
 
 These results indicate the model's robustness and ability to generalize effectively, making it the best-performing model for this problem based on the metrics prioritized: **ROC AUC**, **F1 score**, and **recall**.
+
+-----
+## Prerequisites
+- **`git`**: To clone the repository.
+- **`Anaconda` (`conda`)**: For virtual environment management.
+- **`Docker`**: For deployment and testing.
+- **`AWS CLI`**: For cloud-based services (optional).
+
+To run AWS ECR (Elastic Container Registry)
+
+-------
+## Steps to Install
+
+1. **Clone the repository**:
+   Clone the repository to your local machine:
+   ```bash
+   git clone https://github.com/irenebustos/hotel_cancellations_prediction_model.git
+
+2. create conda environment with python 3.11 or reuse another one existing with this version
+ ```bash
+   conda create -n ml-hotel-cancellations-pred python=3.11
+   ```
+3. Activate the the virtual environment:
+   ```bash
+   conda activate ml-hotel-cancellations-pred 
+   ```
+4. Install pipenv (if not already installed):  Install pipenv globally using pip:
+for that pipenv is needed:
+   ```bash
+    pip install pipenv
+   ```
+5. Install dependencies: Navigate to the project directory and run:
+```bash
+  cd path/to/hotel_cancellations_prediction_model
+pipenv install
+```
+6. Activate the pipenv shell: To activate the environment, use:
+   ```bash
+   pipenv shell
+   ```
+
+-------
+## Steps to create the docker container and run the service: 
+1. create docker image for this model using official Amazon Web Services (AWS) Lambda base image for Python 3.10.
+   ```bash
+    docker build --platform linux/amd64 -t hotel-canc-model .
+   ```
+2. run the docker container: 
+   ```bash
+    docker run -it --rm --platform linux/amd64 hotel-canc-model .
+    ```
+3. Open another tab in the terminal and, having the conda env with the required packages activated,  run the example predict_test_.py where there is an example of a booking (values can be modifiyed):
+
+   ```bash
+    python predict_test_.py
+   ```
+To stop the service, press `Ctrl+C` in the terminal.
+
+---- 
+## Using model in AWS: AWS Lambda API Deployment and Testing
+I have deployed an API on AWS using a Lambda function, which is packaged in a Docker container. The Docker image was published to Amazon Elastic Container Registry (ECR) for easy access. I then created the Lambda function using this container image and exposed the function via an API Gateway. To test and interact with the API, I have been using a Jupyter notebook, sending different events to the Lambda function and analyzing the responses.
+
+To try yourself you can open the file called `predict_test_aws_api.ipynb`, by running it you can test with different event properties and get the prediction from the model.
+
+[![Watch the video demo](https://img.youtube.com/vi/9WMYAk-v2j4/0.jpg)](https://youtu.be/9WMYAk-v2j4)
+
+
 
