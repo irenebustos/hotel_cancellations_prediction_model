@@ -255,7 +255,7 @@ I have deployed an API on AWS using a Lambda function, which is packaged in a Do
 
 To try yourself you can open the file called `predict_test_aws_api.ipynb`, by running it you can test with different event properties and get the prediction from the model.
 
-[![Watch the video demo]([https://img.youtube.com/vi/ahdo98zABQU.jpg)]([https://youtu.be/9WMYAk-v2j4](https://youtu.be/ahdo98zABQU))]([https://youtu.be/ahdo98zABQU](https://youtu.be/ahdo98zABQU))
+[![Watch the video demo](https://img.youtube.com/vi/ahdo98zABQU/0.jpg)](https://youtu.be/ahdo98zABQU)
 
 
 
