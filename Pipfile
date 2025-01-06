@@ -15,5 +15,6 @@ xgboost = "*"
 tqdm = "*"
 scikit-learn = "*"
 gunicorn = "*"
+flask = "*"
 
 [dev-packages]

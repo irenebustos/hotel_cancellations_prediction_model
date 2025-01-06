@@ -11,7 +11,6 @@ with open(model_file, 'rb') as f_in:
 app = Flask('cancellation_prediction')
 
 @app.route('/predict', methods=['POST'])
-
 def predict():
     # Get the input data as JSON
     input_data = request.get_json()
@@ -23,11 +22,14 @@ def predict():
     # Create a DMatrix for prediction
     dmatrix = xgb.DMatrix(X, feature_names=features)
     
-    # Predict days in shelter
+    # Predict days in shelter (single prediction value)
     y_pred = model.predict(dmatrix)[0]
     
+    # Convert y_pred to a native Python float
+    y_pred = float(y_pred)  # Ensuring it's a Python float
+
     result = {
-        'predict_cancellation_booking': (y_pred)
+        'predict_cancellation_booking': y_pred
     }
     
     # Return the result as JSON
