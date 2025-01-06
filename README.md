@@ -1,14 +1,26 @@
-# README
+# Hotel Booking Cancellation Prediction ML Model
+![Alt text](images/image_readme_banner.png)
 
-This README was generated automatically from the notebook.
 
-## Markdown Documentation
+## Table of Contents
+1. [Introduction](##introduction)
+2. [Dataset](#dataset)
+3. [EDA Insights](#eda-insights)
+3. [Prerequisites](#prerequisites)
+4. [Steps to Install](#steps-to-install)
+5. [Steps to Create the Docker Container and Run the Service](#steps-to-create-the-docker-container-and-run-the-service)
+6. [Using the model in AWS](###-Using-model-in-AWS)
+
+## Introduction
+#### Problem Description
+
+The goal is to understand why 33% of all hotel bookings are canceled, which represents a significant impact on the business. Additionally, the task is to predict the likelihood of a booking being canceled over time, allowing the hotel to better estimate its capacity. This will enable the hotel to optimize booking availability by freeing up space for other customers when there is a high probability of cancellations.
+
+## Dataset
 The database used for the model consists in a set of bookings from a hotel with a unique id called ¨boooking_id¨ from 2017 and 2018.
 
-## Markdown Documentation
 There are no missing values in any of the columns.
 
-## Markdown Documentation
 ### Column Names and Data Types
 
 - **Booking_ID (object)**: A unique identifier for each booking made at the hotel. It can be used for referencing a particular booking record.
@@ -49,7 +61,6 @@ There are no missing values in any of the columns.
 
 - **booking_status (object)**: The status of the booking, indicating whether it was cancelled or not. This is the target variable for the machine learning model, representing the outcome we aim to predict (cancelled or not).
 
-## Markdown Documentation
 ### New Columns Created
 
 - **total_people**: The number of total people in the booking (adults & kids). This column represents the total occupancy for the booking.
@@ -64,59 +75,40 @@ There are no missing values in any of the columns.
 
 - **have_children**: A flag indicating whether the booking includes children. This flag replaces the exact number of children, simplifying the analysis.
 
-## Markdown Documentation
-#### Problem Description
-
-The goal is to understand why 33% of all hotel bookings are canceled, which represents a significant impact on the business. Additionally, the task is to predict the likelihood of a booking being canceled over time, allowing the hotel to better estimate its capacity. This will enable the hotel to optimize booking availability by freeing up space for other customers when there is a high probability of cancellations.
-
-## Markdown Documentation
+## EDA Insights
 - **Room Type**: We can see that for room types, the majority are of type 1 and 4. Room types 1, 2, and 4 seem to be booked by two people, while types 3 and 5 are booked by fewer people (possibly more individual guests), and types 6 and 7 are booked by 3 or more people. We observe that rooms with fewer guests on average have lower cancellation ratios.
 
-## Markdown Documentation
 - **Total People**: The majority of bookings are for two people, followed by bookings for one and three people. Interestingly, single-person bookings tend to have fewer cancellations compared to bookings with more people. This could potentially be linked to work-related trips or other factors.
 
-## Markdown Documentation
 - **Lead Time**: The distribution of this property, which indicates how far in advance bookings are made, is particularly interesting. We observe that as the booking date approaches, the number of bookings increases, with the median lead time being 60 days. However, unexpectedly, the cancellation ratio also rises with longer lead times, suggesting that bookings made further in advance are more likely to be canceled.
 
-## Markdown Documentation
 - **Price per Room**: On average, users pay 99 euros per room per day, with the first quartile at 80 euros and the third quartile at 120 euros. There are also some extreme high values in the price distribution. We see a positive correlation between higher prices and higher cancellation ratio, but is not super strong.
 
-## Markdown Documentation
 - **Price per Room and Person**: On average, users pay 51 euros per room per day and per person in the booking, with the first quartile at 42 euros and the third quartile at 66 euros. There are also some extreme high values in the price distribution. We see a positive correlation but less strong than the total price per day
 
-## Markdown Documentation
 - **Number of special Requests**: More special requests correlates with lower cancellation ratio.
 
-## Markdown Documentation
 - **Price per Room**: Most bookings are made online, and these tend to have the highest cancellation ratio. In contrast, bookings made by corporate clients have a lower cancellation ratio, which makes sense since these are typically business trips, and corporate travelers may be less price-sensitive.
 
-## Markdown Documentation
 - **Repeated Guest**: Repeat guests make up only 2.3% of all bookings, but their cancellation ratio is significantly lower compared to first-time guests.
 
-## Markdown Documentation
 - **Has previous cancellations**: Users who cancelled before have less cancellation ratio but also are just a 0.8%.
 
-## Markdown Documentation
 - **Required Car Parking Space**: Only 3% of users request parking, but this significantly lowers the cancellation ratio.
 
-## Markdown Documentation
 - **Type of Meal Plan**: 76% of users request Meal Type 1, while 8.7% choose Meal Type 2. The remaining 14% do not request a meal. The cancellation ratio is notably higher among users who select Meal Type 2.
 
-## Markdown Documentation
 - **Total Nights**: On average, users stay for three nights, with the first quartile at two nights and the third quartile at four nights. Users staying for just one night have a significantly lower cancellation ratio. However, the cancellation ratio increases notably for stays longer than five nights.
 
-## Markdown Documentation
 - **Type of Stay in Terms of Weekday-Weekend**: Around half of the bookings include both weekdays and weekends, while a similar proportion are for weekdays only. Bookings for weekends alone are relatively rare. The cancellation ratio is higher for stays that include both weekdays and weekends compared to the other two categories.
 
-## Markdown Documentation
 - **Type of Stay in Terms of Weekday-Weekend**: Stays with children account for just 6%, with a slightly higher chance of cancellation.
 
-## Markdown Documentation
 - **Arrival Day of the Week**: Bookings with arrival dates on Sundays exhibit a significantly higher likelihood of cancellation compared to other days. This observation highlights an association between the day of the week and cancellation tendencies.
 
 - **Arrival Month of the Year**: A noticeable increase in cancellation rates is observed during the summer months, suggesting a seasonal trend in booking behavior.
 
-## Markdown Documentation
+## Model training (including feature selection)
 For the model the features used for testing the model would be: 
 - 'no_of_weekend_nights'
 - 'no_of_week_nights'
@@ -138,22 +130,7 @@ This columns are dropped: 'booking_id','no_of_previous_cancellations','arrival_y
 
 Target output: 'booking_status' as booking_cancelled_flag, 1 when is cancelled and 0 if not
 
-## Markdown Documentation
-### SMOTE (Synthetic Minority Oversampling Technique): all over sample
-
-Creates synthetic samples by interpolating between existing minority class samples.
-Efficiency: Effective at generating diverse synthetic samples.
-Works well with numerical data.
-Downside: Can introduce noise or outliers if the data has overlapping classes.
-
-## Markdown Documentation
-It looks like myvmodel’s ROC AUC score decreased after apliying all resample techniques, but other metrics such as Recall and F1 Score improved. this situaltion can occur beacuse we are creating a larger number of synthetic positive instances, which might not be as informative or might create noise, thereby making the decision boundary less clear and harming your model's overall discriminative ability.
-
-Anyway, as backup I will select Random over sample as winner resample technique due to be the technique improving all metrics the most in general, but the models will be tested with resample data and not
-
-## Markdown Documentation
-##### Handling Imbalanced Data and Prioritizing Key Metrics
-
+### Handling Imbalanced Data and Prioritizing Key Metrics
 In this project, I applied various **balancing techniques** such as **SMOTE (Synthetic Minority Over-sampling Technique)**, **Random Over/Under Sampling**, and **NearMiss** to address the issue of **class imbalance** in the dataset. Class imbalance occurs when one class has significantly fewer samples than the other, which can lead to biased models that favor the majority class. By using these balancing methods, I ensured that the model received enough data from the minority class, helping it learn better and make more accurate predictions.
 
 After experimenting with different SMOTE ratios, I selected **SMOTE with a ratio of 1.0** for the final model, as it consistently provided the best performance across multiple metrics. Based on the evaluation scores, SMOTE with a 1.0 ratio achieved the highest **AUC**, **Recall**, and **F1 Score**, making it the most balanced approach for this dataset.
@@ -167,14 +144,13 @@ To evaluate the model's performance, I prioritized the following metrics:
 
 By applying these techniques and focusing on these metrics, I ensured that the model performs well in terms of both **accuracy** and **sensitivity** to the minority class, providing meaningful and reliable predictions.
 
-## Markdown Documentation
+### Final model
 After evaluating multiple models, including Logistic Regression, Random Forest, and XGBoost (with and without hyperparameter tuning), the XGBoost model with tuned parameters emerged as the best performer. It was optimized based on key metrics such as AUC, F1 score, and recall, which were prioritized for this task.
 
 The tuned XGBoost model achieved an impressive AUC score of 95%, indicating strong overall classification performance. Additionally, it achieved an F1 score of 83.4%, reflecting a good balance between precision and recall. The recall value of 80.6% demonstrates the model's ability to correctly identify positive instances, which was crucial for this problem.
 
 By leveraging grid search for hyperparameter tuning, the model parameters were optimized for maximum performance, showcasing the power of XGBoost for this classification task. Given the emphasis on these three metrics, this XGBoost model outperformed other algorithms, making it the best choice for this project.
 
-## Markdown Documentation
 #### Key Features Influencing Booking Cancellations
 
 The features that best explain booking cancellations at the hotel are:
@@ -186,9 +162,7 @@ The features that best explain booking cancellations at the hotel are:
 - **Number of Weekdays**: The count of weekdays during the booking.
 - **Total Nights**: The total number of nights in the booking.
 
-## Markdown Documentation
-## Model Performance Summary
-
+### Model Performance Summary
 
 The XGBoost model demonstrated strong performance across both the validation and test datasets, achieving high scores in key metrics:
 
